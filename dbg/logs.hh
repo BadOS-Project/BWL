@@ -1,5 +1,5 @@
-#ifndef LOGS_HH
-#define LOGS_HH
+#ifndef __logs_hh_
+#define __logs_hh_
 
 #include <iostream>
 
