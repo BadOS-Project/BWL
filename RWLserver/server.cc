@@ -2,5 +2,6 @@
 
 int main(int argc, char **argv)
 {
-    switch_to_daemon(); //切换到守护进程
+    switch_to_daemon();
+    start_rwl_server();
 }

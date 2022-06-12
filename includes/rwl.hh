@@ -6,6 +6,14 @@
 namespace rwl
 {
 
+    /**
+     * @brief 通过进程名获取pid
+     *
+     * @param task_name
+     * @return int
+     */
+    int get_pid_by_name(const char *task_name);
+
     class Frame
     {
     private:
@@ -20,6 +28,20 @@ namespace rwl
         void *userbuf;        //用户缓冲
         int64_t ofset[2];     //用户缓冲位置
         uint64_t usersize[2]; //用户缓冲大小
+
+        int pixel_depth;//像素深度
+
+        void __Frame();
+
+        /**
+         * @brief 向rwl服务器申请新的缓冲区
+         * 
+         * @param buff 
+         * @param size 
+         * @return void* 
+         */
+        void *realloc_buff(void *buff, size_t size);
+
     public:
         Frame();
         Frame(std::string name);
@@ -100,6 +122,16 @@ namespace rwl
          * @return int 错误码
          */
         int moveByPath(std::vector<int[2]> path, uint64_t freq);
+
+#ifndef __rwl_server
+        /**
+         * @brief 将窗口附加到rwl显示服务器上
+         *
+         * @return Frame*
+         */
+        Frame *attach_to_rwl_server();
+#endif
+
     };
 
     class Page
@@ -117,17 +149,22 @@ namespace rwl
         ~Page();
 
         /**
-         * @brief 添加窗口
-         * 
-         * @param frame 窗口id
+         * @brief 添加本进程pid至owners
+         *
          */
-        void addFrame(id_t frame);
+        void addOwner();
         /**
          * @brief 添加窗口
-         * 
+         *
+         * @param frame 窗口id
+         */
+        void addFrame(id_t frame, int layer);
+        /**
+         * @brief 添加窗口
+         *
          * @param frame 窗口
          */
-        void addFrame(Frame *frame);
+        void addFrame(Frame *frame, int layer);
 
         /**
          * @brief 将窗口提前

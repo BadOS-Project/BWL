@@ -3,7 +3,9 @@
 
 #include <iostream>
 #include <vector>
-
-typedef unsigned long long id_t;
+namespace rwl
+{
+    typedef unsigned long long id_t;
+};
 
 #endif
