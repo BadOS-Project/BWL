@@ -1,23 +1,23 @@
 #include "logs.hh"
 
-#define RWLSV_GR "[rwl-server] "
-#define RWLSV_RD "[rwl-server] "
+#define BWLSV_GR "[bwl-server] "
+#define BWLSV_RD "[bwl-server] "
 
-namespace rwl
+namespace bwl
 {
-    void rwl_exit(int code)
+    void bwl_exit(int code)
     {
-        std::cout << RWLSV_GR << "exit with code " << code << std::endl;
+        std::cout << BWLSV_GR << "exit with code " << code << std::endl;
         exit(code);
     }
 
     void log(std::string log)
     {
-        std::cout << RWLSV_GR << log << std::endl;
+        std::cout << BWLSV_GR << log << std::endl;
     }
 
     void err(std::string err)
     {
-        std::cerr << RWLSV_RD << err << std::endl;
+        std::cerr << BWLSV_RD << err << std::endl;
     }
 };

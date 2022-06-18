@@ -1,7 +1,7 @@
 #ifndef __server_hh_
 #define __server_hh_
 
-#define __rwl_server
+#define __bwl_server
 
 #include <iostream>
 #include <unistd.h>
@@ -18,10 +18,7 @@
 #include <sys/mman.h>
 #include <time.h>
 #include <unistd.h>
-#include <xf86drm.h>
-#include <xf86drmMode.h>
 #include <dirent.h>
-
 #include <cstdlib>
 
 #include "../dbg/logs.hh"
@@ -31,21 +28,21 @@
  */
 void switch_to_daemon()
 {
-    rwl::log("switching to daemon...\nyou can see logs in ~/.rwl/rwl-log and ~/.rwl/rwl-err");
+    bwl::log("switching to daemon...\nyou can see logs in ~/.bwl/bwl-log and ~/.bwl/bwl-err");
     daemon(1, 1);
     std::string dir = std::string("/home/") + getpwuid(getuid())->pw_name + "/";
     chdir(dir.c_str());
-    mkdir(".rwl", 0755);
-    freopen("./.rwl/rwl-log", "w", stdout);
-    freopen("./.rwl/rwl-err", "w", stderr);
+    mkdir(".bwl", 0755);
+    freopen("./.bwl/bwl-log", "w", stdout);
+    freopen("./.bwl/bwl-err", "w", stderr);
 }
 
 
 
 /**
- * @brief 启动rwl显示服务器
+ * @brief 启动bwl显示服务器
  */
-void start_rwl_server()
+void start_bwl_server()
 {
 }
 

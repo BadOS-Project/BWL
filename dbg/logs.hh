@@ -3,11 +3,11 @@
 
 #include <iostream>
 
-namespace rwl
+namespace bwl
 {
     void log(std::string);
     void err(std::string);
-    void rwl_exit(int);
+    void bwl_exit(int);
 };
 
 #endif

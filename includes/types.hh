@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-namespace rwl
+namespace bwl
 {
     typedef unsigned long long id_t;
 };
