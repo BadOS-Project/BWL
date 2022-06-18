@@ -8,6 +8,7 @@ namespace bwl
     void bwl_exit(int code)
     {
         std::cout << BWLSV_GR << "exit with code " << code << std::endl;
+        system("rm -r /dev/bwl");
         exit(code);
     }
 
