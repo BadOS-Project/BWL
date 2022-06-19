@@ -43,8 +43,41 @@ namespace bwl
         int l1c;
     };
 
-    id_t createPage();//创建页
-    void deletePage();//销毁页
+#ifndef BWLSERVER
+    int initBWL(); //初始化bwl并且检测bwl服务器
+#endif
+
+    /**
+     * @brief 创建页
+     *
+     * @param pgid 对于bwl服务器来说，是使用的pgid
+     * @return __page*
+     */
+#define CREATE_PAGE_FAULT (__page *)(-2)
+    __page *createPage(id_t pgid);
+
+    /**
+     * @brief 销毁页
+     *
+     */
+    void deletePage(__page *);
+
+    /**
+     * @brief 创建窗口
+     *
+     * @param fid 对于bwl服务器来说，是使用的fid
+     * @param name 窗口名
+     * @return __frame*
+     */
+#define CREATE_FRAME_FAULT (__frame *)(-2)
+#define TRUNCATE_SHM_FAULT (__frame *)(-3)
+    __frame *createFrame(id_t fid, id_t pgid, std::string name, int width, int height, int x, int y);
+
+    /**
+     * @brief 销毁窗口
+     *
+     */
+    void deleteFrame(__frame *);
 
 };
 

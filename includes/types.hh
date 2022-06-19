@@ -5,6 +5,7 @@
 #include <vector>
 
 #define PAGEDIR std::string("/dev/bwl/pages/")
+#define FRMDIR std::string("/dev/bwl/frames/")
 
 namespace bwl
 {

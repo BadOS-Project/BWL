@@ -21,10 +21,21 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <cstdlib>
+#include <signal.h>
+#include <libdrm/drm.h>
 
 #include "../dbg/logs.hh"
 
+#define BWLSERVER
+
+#include "../includes/bsv.hh"
+
 #define DEBUGGING
+
+std::vector<bwl::__page *> pages;//页列表
+bwl::id_t current_pgid;//当前页 
+
+std::vector<bwl::__frame *> frames;//窗口列表
 
 /**
  * @brief 切换为守护进程
@@ -32,6 +43,11 @@
 void switch_to_daemon()
 {
     bwl::log("switching to daemon...\nyou can see logs in ~/.bwl/bwl-log and ~/.bwl/bwl-err");
+    if(getpwuid(getuid())->pw_name != "root")
+    {
+        bwl::err("bad wayland must be started with root.");
+        bwl::bwl_exit(-3);
+    }
     // std::string dir = std::string("/home/") + getpwuid(getuid())->pw_name + "/";
     chdir("/root/");
     mkdir(".bwl", 0755);
@@ -52,8 +68,12 @@ void make_bwl_dev()
     debug.close();
 #endif
     mkdir("/dev/bwl/pages", 0755);
-    mkdir("/dev/bwl/pages/0", 0755);
     mkdir("/dev/bwl/frames", 0755);
+}
+
+void server_handler(int signal)
+{
+
 }
 
 /**
@@ -61,6 +81,7 @@ void make_bwl_dev()
  */
 void start_bwl_server()
 {
+    signal(35, server_handler);
 }
 
 #endif
