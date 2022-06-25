@@ -30,7 +30,13 @@
 
 #include "../includes/bsv.hh"
 
+//TODO 正式发布时去掉
 #define DEBUGGING
+
+#define CREATEPAGE 35
+#define DELETEPAGE 36
+#define CREATEFRAME 37
+#define DELETEFRAME 38
 
 std::vector<bwl::__page *> pages;//页列表
 bwl::id_t current_pgid;//当前页 
@@ -71,17 +77,11 @@ void make_bwl_dev()
     mkdir("/dev/bwl/frames", 0755);
 }
 
-void server_handler(int signal)
-{
-
-}
-
 /**
  * @brief 启动bwl显示服务器
  */
 void start_bwl_server()
 {
-    signal(35, server_handler);
 }
 
 #endif
