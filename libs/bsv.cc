@@ -8,8 +8,12 @@
 #include <unistd.h>
 #include <cstring>
 
+#include "../includes/pipe.hh"
+
 namespace bwl
 {
+
+    Pipe recver;
 
     uint64_t monitor_size[2];
     int pix_depth;

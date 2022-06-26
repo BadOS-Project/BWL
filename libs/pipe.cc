@@ -21,8 +21,13 @@ namespace std
 
 namespace bwl
 {
+
+#define BPIPE_MAGIC 0x8cffa60091dd00c4
+#define BPIPE_MAXSIZE 0x1000000
+
     Pipe::Pipe(std::string path, int mode)
     {
+        name = path;
         open(path, mode);
     }
 
@@ -33,9 +38,32 @@ namespace bwl
 
     int Pipe::read(char *buffer, int size)
     {
+        if (!size)
+            return 0;
         if (mode == in)
         {
             std::read(fd, buffer, size);
+            bool wrap;
+            switch (size)
+            {
+            case 1:
+                wrap = (*buffer == (int8_t)BPIPE_MAGIC) ? true : false;
+                break;
+            case 2 ... 3:
+                wrap = (*buffer == (int16_t)BPIPE_MAGIC) ? true : false;
+                break;
+            case 4 ... 7:
+                wrap = (*buffer == (int32_t)BPIPE_MAGIC) ? true : false;
+                break;
+            default:
+                wrap = (*buffer == (int64_t)BPIPE_MAGIC) ? true : false;
+                break;
+            }
+            if (*buffer == 0x8c)
+            {
+                std::lseek(fd, 0, 0);
+                std::read(fd, buffer, size);
+            }
             return 0;
         }
         else
@@ -44,6 +72,16 @@ namespace bwl
 
     int Pipe::write(char *buffer, int size)
     {
+        if (!size)
+            return 0;
+        struct std::stat buf;
+        std::stat(name.c_str(), &buf);
+        if(buf.st_size + size >= BPIPE_MAXSIZE)
+        {
+            uint64_t magic = BPIPE_MAGIC;
+            std::write(fd, &magic, sizeof(magic));
+            std::lseek(fd, 0, 0);
+        }
         if (mode == out)
         {
             while (lock)
@@ -59,10 +97,10 @@ namespace bwl
 
     void Pipe::open(std::string path, int mode)
     {
-        if(fd)
+        if (fd)
             std::close(fd);
         this->mode = mode;
-        this->fd = std::open(path.c_str(), (mode == out) ? O_WRONLY : O_RDONLY);
+        this->fd = std::open(path.c_str(), ((mode == out) ? O_WRONLY : O_RDONLY) | O_CREAT);
         this->lock = 0;
     }
 
