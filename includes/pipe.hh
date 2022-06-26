@@ -27,6 +27,9 @@ namespace bwl
 
         int read(char *buffer, int size);
         int write(char *buffer, int size);
+
+        void open(std::string path, int mode);
+        void close();
     };
 };
 
