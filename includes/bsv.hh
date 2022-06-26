@@ -5,6 +5,9 @@
 
 namespace bwl
 {
+
+    int pipe;//管道
+
     const uint32_t MAX_OWNERS = 512;
     const uint32_t MAX_FRAMES = 512;
 
