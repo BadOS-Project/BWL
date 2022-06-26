@@ -13,8 +13,6 @@
 namespace bwl
 {
 
-    Pipe recver;
-
     uint64_t monitor_size[2];
     int pix_depth;
 #define BGBUFSIZE (monitor_size[0] * monitor_size[1] * pix_depth)
@@ -84,7 +82,7 @@ namespace bwl
      * @brief 创建窗口
      *
      * @param fid 窗口id
-     * @param pgid 所在页id
+     * @param page 所在页
      * @param name 窗口名
      * @param width 宽度
      * @param height 高度
@@ -93,7 +91,7 @@ namespace bwl
      * @return __frame*
      */
 #define FRMBUFSIZE (width * height * pix_depth)
-    __frame *createFrame(id_t fid, id_t pgid, std::string name, int width, int height, int x, int y)
+    __frame *createFrame(id_t fid, __page *page, std::string name, int width, int height, int x, int y)
     {
         mkdir((FRMDIR + std::to_string(fid)).c_str(), 0755);
         int shmf = shm_open((FRMDIR + std::to_string(fid) + "shm").c_str(), O_RDWR | O_EXCL, 0);
@@ -114,7 +112,7 @@ namespace bwl
         if (frame != (__frame *)-1)
         {
             frame->fid = fid;
-            frame->pgid = pgid;
+            frame->pgid = page->pgid;
             frame->namelen = name.length();
             memcpy(frame->name, name.c_str(), name.length());
             frame->de_border_up = 0;

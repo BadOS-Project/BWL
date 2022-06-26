@@ -67,13 +67,18 @@ namespace bwl
     /**
      * @brief 创建窗口
      *
-     * @param fid 对于bwl服务器来说，是使用的fid
+     * @param fid 窗口id
+     * @param page 所在页
      * @param name 窗口名
+     * @param width 宽度
+     * @param height 高度
+     * @param x 横坐标
+     * @param y 纵坐标
      * @return __frame*
      */
 #define CREATE_FRAME_FAULT (__frame *)(-2)
 #define TRUNCATE_SHM_FAULT (__frame *)(-3)
-    __frame *createFrame(id_t fid, id_t pgid, std::string name, int width, int height, int x, int y);
+    __frame *createFrame(id_t fid, __page *page, std::string name, int width, int height, int x, int y);
 
     /**
      * @brief 销毁窗口

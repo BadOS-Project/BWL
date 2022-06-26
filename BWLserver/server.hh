@@ -43,6 +43,8 @@ bwl::id_t current_pgid;//当前页
 
 std::vector<bwl::__frame *> frames;//窗口列表
 
+
+
 /**
  * @brief 切换为守护进程
  */
@@ -82,6 +84,7 @@ void make_bwl_dev()
  */
 void start_bwl_server()
 {
+    recv
 }
 
 #endif
