@@ -73,6 +73,7 @@ void make_bwl_dev()
 #endif
     mkdir("/dev/bwl/pages", 0755);
     mkdir("/dev/bwl/frames", 0755);
+    mkdir("/dev/bwl/responds", 0755);
 }
 
 /**
