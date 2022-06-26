@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "*.s": "nasm",
-        "fstream": "cpp",
-        "*.tcc": "cpp",
-        "cstdio": "cpp",
-        "cstdlib": "cpp"
-    }
-}

@@ -29,9 +29,10 @@ namespace bwl
         int lock;
         std::string name;
     public:
-        const int in = 055;
-        const int out = 077;
+        static const int in = 055;
+        static const int out = 077;
 
+        Pipe();
         Pipe(std::string, int mode);
         ~Pipe();
 

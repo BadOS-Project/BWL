@@ -25,6 +25,10 @@ namespace bwl
 #define BPIPE_MAGIC 0x8cffa60091dd00c4
 #define BPIPE_MAXSIZE 0x1000000
 
+    Pipe::Pipe()
+    {
+    }
+
     Pipe::Pipe(std::string path, int mode)
     {
         name = path;
@@ -76,7 +80,7 @@ namespace bwl
             return 0;
         struct std::stat buf;
         std::stat(name.c_str(), &buf);
-        if(buf.st_size + size >= BPIPE_MAXSIZE)
+        if (buf.st_size + size >= BPIPE_MAXSIZE)
         {
             uint64_t magic = BPIPE_MAGIC;
             std::write(fd, &magic, sizeof(magic));

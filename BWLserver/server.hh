@@ -29,21 +29,17 @@
 #define BWLSERVER
 
 #include "../includes/bsv.hh"
+#include "../includes/pipe.hh"
 
 //TODO 正式发布时去掉
 #define DEBUGGING
-
-#define CREATEPAGE 35
-#define DELETEPAGE 36
-#define CREATEFRAME 37
-#define DELETEFRAME 38
 
 std::vector<bwl::__page *> pages;//页列表
 bwl::id_t current_pgid;//当前页 
 
 std::vector<bwl::__frame *> frames;//窗口列表
 
-
+bwl::Pipe server_recv;
 
 /**
  * @brief 切换为守护进程
@@ -84,7 +80,8 @@ void make_bwl_dev()
  */
 void start_bwl_server()
 {
-    recv
+    server_recv.open("/dev/bwl/reciever.pipe", bwl::Pipe::in);
+
 }
 
 #endif
