@@ -8,7 +8,6 @@
 #include <unistd.h>
 #include <cstring>
 
-#include "../includes/pipe.hh"
 
 namespace bwl
 {
