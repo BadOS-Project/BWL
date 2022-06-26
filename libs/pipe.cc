@@ -63,11 +63,20 @@ namespace bwl
                 wrap = (*buffer == (int64_t)BPIPE_MAGIC) ? true : false;
                 break;
             }
-            if (*buffer == 0x8c)
+            if (wrap)
             {
                 std::lseek(fd, 0, 0);
+                int i = 12;
+                std::write(fd, &i, sizeof(int));
+                std::lseek(fd, i, 0);
                 std::read(fd, buffer, size);
             }
+            std::lseek(fd, 0, 0);
+            int i;
+            std::read(fd, &i, sizeof(int));
+            i += size;
+            std::write(fd, &i, sizeof(int));
+            std::lseek(fd, i, 0);
             return 0;
         }
         else
@@ -78,20 +87,42 @@ namespace bwl
     {
         if (!size)
             return 0;
-        struct std::stat buf;
-        std::stat(name.c_str(), &buf);
-        if (buf.st_size + size >= BPIPE_MAXSIZE)
-        {
-            uint64_t magic = BPIPE_MAGIC;
-            std::write(fd, &magic, sizeof(magic));
-            std::lseek(fd, 0, 0);
-        }
         if (mode == out)
         {
+            //等待锁
+            //应用锁
             while (lock)
                 ;
             lock++;
+            //文件锁
+            std::lseek(fd, 8, 0);
+            int i;
+            std::read(fd, &i, sizeof(int));
+            while (i)
+            {
+                std::lseek(fd, 8, 0);
+                std::read(fd, &i, sizeof(int));
+            }
+            std::lseek(fd, 8, 0);
+            i = 1;
+            std::write(fd, &i, sizeof(int));
+
+            //开始写数据
+            std::lseek(fd, 4, 0);
+            std::read(fd, &i, sizeof(int));
+            std::lseek(fd, i, 0);
+            if (i + size >= BPIPE_MAXSIZE)
+            {
+                uint64_t magic = BPIPE_MAGIC;
+                std::write(fd, &magic, sizeof(magic));
+                std::lseek(fd, 12, 0);
+            }
             std::write(fd, buffer, size);
+
+            //解锁
+            std::lseek(fd, 8, 0);
+            i= 0;
+            std::write(fd, &i, sizeof(int));
             lock--;
             return 0;
         }
@@ -104,8 +135,23 @@ namespace bwl
         if (fd)
             std::close(fd);
         this->mode = mode;
-        this->fd = std::open(path.c_str(), ((mode == out) ? O_WRONLY : O_RDONLY) | O_CREAT);
+        this->fd = std::open(path.c_str(), O_RDWR | O_CREAT);
         this->lock = 0;
+        std::lseek(fd, 0, 0);
+        if (mode == in)
+        {
+            std::truncate(name.c_str(), 12);
+            int i = 12;
+            std::write(fd, &i, sizeof(int));
+            std::lseek(fd, i, 0);
+        }
+        else
+        {
+            std::lseek(fd, 4, 0);
+            int tail;
+            std::read(fd, &tail, sizeof(int));
+            std::lseek(fd, tail, 0);
+        }
     }
 
     void Pipe::close()
