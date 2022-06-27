@@ -6,10 +6,15 @@
 namespace bwl
 {
 
-    int pipe;//管道
-
     const uint32_t MAX_OWNERS = 512;
     const uint32_t MAX_FRAMES = 512;
+
+    enum colorspace //色彩空间
+    {
+        rgb,
+        hsv,
+        cmyk,
+    };
 
     struct __frame
     {
@@ -28,6 +33,12 @@ namespace bwl
         uint64_t de_border_left;  //桌面环境左边界区
         uint64_t de_border_right; //桌面环境右边界区
 
+        colorspace space; //缓冲区使用的色彩空间
+
+        bool refresh;       //刷新标志
+        int64_t refrloc[2]; //刷新区域位置
+        uint64_t refrsz[2]; //刷新区域大小
+
         int namelen;  //窗口名长度
         char name[0]; //窗口名
     };
@@ -37,17 +48,15 @@ namespace bwl
         id_t pgid;                //页id
         pid_t owners[MAX_OWNERS]; //所有所属进程
 
-        void *server_bg_layer;   // bwl使用的背景层缓冲区
-        void *client_bg_layer;   //用户程序使用的背景层缓冲区
+        void *server_bg_layer; // bwl使用的背景层缓冲区
+        void *client_bg_layer; //用户程序使用的背景层缓冲区
+        colorspace space;      //背景颜色空间
+
         id_t layer0[MAX_FRAMES]; // 0层
         int l0c;
         id_t layer1[MAX_FRAMES]; // 1层
         int l1c;
     };
-
-#ifdef __bwl_hh_
-    int initBWL(); //初始化bwl并且检测bwl服务器
-#endif
 
     /**
      * @brief 创建页
