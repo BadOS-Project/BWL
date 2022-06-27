@@ -94,6 +94,15 @@ namespace bwl
      *
      */
     void deleteFrame(__frame *);
+
+    /**
+     * @brief 设置显示器参数
+     *
+     * @param width
+     * @param height
+     * @param pix_depth
+     */
+    void setmonitor(int width, int height, int pix_depth);
 };
 
 #endif
