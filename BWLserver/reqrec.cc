@@ -40,7 +40,10 @@ namespace bwl
         frames[fr->fid] = fr;
     }
 
-    //TODO 完成do_delete_frame()
+    // TODO 完成do_delete_frame()
+    void do_delete_frame(req_pack *rp)
+    {
+    }
 
     /**
      * @brief req信号接受函数
@@ -62,6 +65,9 @@ namespace bwl
             break;
         case requests::create_frame:
             do_create_frame(rp);
+            break;
+        case requests::del_frame:
+            do_delete_frame(rp);
             break;
         default:
             break;
