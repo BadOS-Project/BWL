@@ -35,6 +35,8 @@
 //TODO 正式发布时去掉
 #define DEBUGGING
 
+std::string monitor_device = "/dev/dri/";
+
 std::vector<bwl::__page *> pages;//页列表
 bwl::id_t current_pgid;//当前页 
 
