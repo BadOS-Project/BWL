@@ -89,7 +89,7 @@ namespace bwl
      * @return __frame*
      */
 #define FRMBUFSIZE (width * height * pix_depth)
-    __frame *createFrame(id_t fid, __page *page, std::string name, int width, int height, int x, int y)
+    __frame *createFrame(id_t fid, __page *page, std::string name, uint64_t width, uint64_t height, int64_t x, int64_t y)
     {
         mkdir((FRMDIR + std::to_string(fid)).c_str(), 0755);
         int shmf = shm_open((FRMDIR + std::to_string(fid) + "shm").c_str(), O_RDWR | O_EXCL, 0);

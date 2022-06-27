@@ -87,7 +87,7 @@ namespace bwl
      */
 #define CREATE_FRAME_FAULT (__frame *)(-2)
 #define TRUNCATE_SHM_FAULT (__frame *)(-3)
-    __frame *createFrame(id_t fid, __page *page, std::string name, int width, int height, int x, int y);
+    __frame *createFrame(id_t fid, __page *page, std::string name, uint64_t width, uint64_t height, int64_t x, int64_t y);
 
     /**
      * @brief 销毁窗口
