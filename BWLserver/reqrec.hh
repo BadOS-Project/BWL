@@ -5,40 +5,84 @@
 #include "../includes/bsv.hh"
 #include <vector>
 
-extern std::vector<bwl::__page *> pages;//页列表
-extern bwl::id_t current_pgid;//当前页 
-
-extern std::vector<bwl::__frame *> frames;//窗口列表
-
-extern bwl::Pipe server_recv;
-
 namespace bwl
 {
     enum request
     {
-        create_frame,
-        del_frame,
-        create_page,
-        del_page,
+        create_frame, //创建窗口
+        del_frame,    //删除窗口
+        create_page,  //创建页
+        del_page,     //删除页
+        switch_as,    //切换顶层窗口
+        wakeup,       //唤醒使服务器刷新屏幕
+    };
+
+#define REQMAGIC 0xa68c5cce7be74433
+
+#define SIGBWLREQ 38
+
+    struct arg_req_creafra
+    {
+        id_t pgid;
+        uint64_t size[2];
+        int64_t pos[2];
+        int namelen;
+        char name[128];
+        colorspace space;
+    };
+
+    struct arg_req_delfra
+    {
+        id_t fid;
+    };
+
+    struct arg_req_creapg
+    {
+        colorspace bgspace;
+    };
+
+    struct arg_req_delpg
+    {
+        id_t pgid;
+    };
+
+    struct arg_req_switch
+    {
+        id_t pgid;
+        id_t fid;
+    };
+
+    union arg_req_t
+    {
+        arg_req_creafra a_create_frame;
+        arg_req_delfra a_del_frame;
+        arg_req_creapg a_create_page;
+        arg_req_delpg a_del_page;
     };
 
     /**
      * @brief 请求包
-     * 
+     *
      * 包括请求类型，
      * 进程号，
      * 请求带有的参数，
      * 魔数(防止其它程序向管道乱发数据，魔数没有对应则扔掉此请求)
-     * 
+     *
      */
     struct req_pack
     {
         request requests;
         pid_t pid;
-        char args[128];
+        uint64_t magic;
+        arg_req_t arguments;
     };
-};
 
-void reqrec();
+    /**
+     * @brief req信号接受函数
+     *
+     */
+    void reqrec(int);
+
+};
 
 #endif
