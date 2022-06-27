@@ -4,8 +4,11 @@
 #include <iostream>
 #include <vector>
 
-#define PAGEDIR std::string("/dev/bwl/pages/")
-#define FRMDIR std::string("/dev/bwl/frames/")
+extern std::string monitor_device;
+
+#define BWLDIR (std::string("/dev/bwl(") + monitor_device + ")")
+#define PAGEDIR (std::string("/dev/bwl(") + monitor_device + ")/pages/")
+#define FRMDIR (std::string("/dev/bwl(") + monitor_device + ")/frames/")
 
 namespace bwl
 {

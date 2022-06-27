@@ -65,18 +65,18 @@ void switch_to_daemon()
 
 void make_bwl_dev()
 {
-    mkdir("/dev/bwl", 0600);
-    std::fstream host("/dev/bwl/host", std::ios::out); //为用户提供bwl服务器的进程号
+    mkdir(BWLDIR.c_str(), 0755);
+    std::fstream host(BWLDIR + "/host", std::ios::out); //为用户提供bwl服务器的进程号
     host << getpid() << std::endl;
     host.close();
 #ifdef DEBUGGING
-    std::fstream debug("/dev/bwl/dbg", std::ios::out);
+    std::fstream debug(BWLDIR + "/dbg", std::ios::out);
     debug << "Random World Studio" << std::endl;
     debug.close();
 #endif
-    mkdir("/dev/bwl/pages", 0755);
-    mkdir("/dev/bwl/frames", 0755);
-    mkdir("/dev/bwl/responds", 0755);
+    mkdir((BWLDIR + "/pages").c_str(), 0755);
+    mkdir((BWLDIR + "/frames").c_str(), 0755);
+    mkdir((BWLDIR + "/responds").c_str(), 0755);
 }
 
 /**

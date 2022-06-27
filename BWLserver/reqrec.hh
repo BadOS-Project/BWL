@@ -7,7 +7,7 @@
 
 namespace bwl
 {
-    enum request
+    enum requests
     {
         create_page,  //创建页
         del_page,     //删除页
@@ -71,7 +71,7 @@ namespace bwl
      */
     struct req_pack
     {
-        request request;
+        requests request;
         pid_t pid;
         uint64_t magic;
         arg_req_t arguments;

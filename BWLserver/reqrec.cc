@@ -37,10 +37,10 @@ namespace bwl
             return;
         switch (rp->request)
         {
-        case request::create_page:
+        case requests::create_page:
             do_create_page(rp);
             break;
-        case request::del_page:
+        case requests::del_page:
             do_delete_page(rp);
             break;
         default:
