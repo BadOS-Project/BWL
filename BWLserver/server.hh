@@ -32,15 +32,15 @@
 #include "../includes/pipe.hh"
 #include "reqrec.hh"
 
-//TODO 正式发布时去掉
+// TODO 正式发布时去掉
 #define DEBUGGING
 
 std::string monitor_device = "/dev/dri/";
 
-std::vector<bwl::__page *> pages;//页列表
-bwl::id_t current_pgid;//当前页 
+std::map<bwl::id_t, bwl::__page *> pages; //页列表
+bwl::id_t current_pgid;                   //当前页
 
-std::vector<bwl::__frame *> frames;//窗口列表
+std::map<bwl::id_t, bwl::__frame *> frames; //窗口列表
 
 bwl::Pipe server_recv;
 
@@ -50,7 +50,7 @@ bwl::Pipe server_recv;
 void switch_to_daemon()
 {
     bwl::log("switching to daemon...\nyou can see logs in ~/.bwl/bwl-log and ~/.bwl/bwl-err");
-    if(getpwuid(getuid())->pw_name != "root")
+    if (getpwuid(getuid())->pw_name != "root")
     {
         bwl::err("bad wayland must be started with root.");
         bwl::bwl_exit(-3);
