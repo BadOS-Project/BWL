@@ -8,7 +8,6 @@
 #include <unistd.h>
 #include <cstring>
 
-
 namespace bwl
 {
 
@@ -156,6 +155,20 @@ namespace bwl
         munmap(frame, sizeof(__frame) + frame->namelen);
         shm_unlink((FRMDIR + std::to_string(fid) + "shm").c_str());
         rmdir((FRMDIR + std::to_string(fid)).c_str());
+    }
+
+    /**
+     * @brief 设置显示器参数
+     *
+     * @param width
+     * @param height
+     * @param pix_depth
+     */
+    void setmonitor(int width, int height, int pix_dpt)
+    {
+        monitor_size[0] = width;
+        monitor_size[1] = height;
+        pix_depth = pix_dpt;
     }
 
 };
