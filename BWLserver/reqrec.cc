@@ -9,6 +9,11 @@ extern bwl::Pipe server_recv;
 
 namespace bwl
 {
+
+    void do_create_page(req_pack *rp)
+    {
+    }
+
     /**
      * @brief req信号接受函数
      *
@@ -17,5 +22,16 @@ namespace bwl
     {
         req_pack *rp = new req_pack;
         server_recv.read((char *)rp, sizeof(req_pack));
+        if (rp->magic != REQMAGIC)
+            return;
+        switch (rp->request)
+        {
+        case request::create_page:
+            do_create_page(rp);
+            break;
+
+        default:
+            break;
+        }
     }
 };

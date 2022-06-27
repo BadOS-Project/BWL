@@ -9,10 +9,10 @@ namespace bwl
 {
     enum request
     {
-        create_frame, //创建窗口
-        del_frame,    //删除窗口
         create_page,  //创建页
         del_page,     //删除页
+        create_frame, //创建窗口
+        del_frame,    //删除窗口
         switch_as,    //切换顶层窗口
         wakeup,       //唤醒使服务器刷新屏幕
     };
@@ -71,7 +71,7 @@ namespace bwl
      */
     struct req_pack
     {
-        request requests;
+        request request;
         pid_t pid;
         uint64_t magic;
         arg_req_t arguments;
