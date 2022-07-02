@@ -3,12 +3,14 @@
 #define BWLSV_GR "[bwl-server] "
 #define BWLSV_RD "[bwl-server] "
 
+extern std::string monitor_device;
+
 namespace bwl
 {
     void bwl_exit(int code)
     {
         std::cout << BWLSV_GR << "exit with code " << code << std::endl;
-        system("rm -r /dev/bwl");
+        system((std::string("rm -r '/dev/bwl(") + monitor_device + ")'").c_str());
         exit(code);
     }
 

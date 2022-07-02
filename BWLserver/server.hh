@@ -35,7 +35,7 @@
 // TODO 正式发布时去掉
 #define DEBUGGING
 
-std::string monitor_device = "/dev/dri/";
+std::string monitor_device = "";
 
 std::map<bwl::id_t, bwl::__page *> pages; //页列表
 bwl::id_t current_pgid;                   //当前页
@@ -50,9 +50,9 @@ bwl::Pipe server_recv;
 void switch_to_daemon()
 {
     bwl::log("switching to daemon...\nyou can see logs in ~/.bwl/bwl-log and ~/.bwl/bwl-err");
-    if (getpwuid(getuid())->pw_name != "root")
+    if (getpwuid(getuid())->pw_name != std::string("root"))
     {
-        bwl::err("bad wayland must be started with root.");
+        bwl::err(std::string("bad wayland must be started with root.(") + getpwuid(getuid())->pw_name + " now)");
         bwl::bwl_exit(-3);
     }
     // std::string dir = std::string("/home/") + getpwuid(getuid())->pw_name + "/";
