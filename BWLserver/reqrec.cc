@@ -40,9 +40,10 @@ namespace bwl
         frames[fr->fid] = fr;
     }
 
-    // TODO 完成do_delete_frame()
     void do_delete_frame(req_pack *rp)
     {
+        deleteFrame(frames[rp->arguments.a_del_frame.fid]);
+        frames.erase(rp->arguments.a_del_frame.fid);
     }
 
     /**
