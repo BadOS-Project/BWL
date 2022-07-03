@@ -15,6 +15,7 @@ namespace std
 #include <time.h>
 #include <dirent.h>
 #include <unistd.h>
+#include <string.h>
 };
 
 #include <cstdio>
@@ -158,6 +159,12 @@ namespace bwl
     {
         std::close(fd);
         fd = 0;
+    }
+
+    Pipe *Pipe::operator<<(void *buffer)
+    {
+        this->write((char *)buffer, std::strlen((char *)buffer));
+        return this;
     }
 
 };

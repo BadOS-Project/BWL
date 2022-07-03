@@ -32,6 +32,8 @@ namespace bwl
 
         void open(std::string path, int mode);
         void close();
+
+        Pipe *operator<<(void *);
     };
 };
 
