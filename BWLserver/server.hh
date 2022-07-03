@@ -24,6 +24,8 @@
 #include <signal.h>
 #include <libdrm/drm.h>
 
+#include <cstring>
+
 #include "../dbg/logs.hh"
 
 #define BWLSERVER
