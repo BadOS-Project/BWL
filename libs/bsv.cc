@@ -97,11 +97,11 @@ namespace bwl
         {
             return CREATE_FRAME_FAULT;
         }
-        if (ftruncate(shmf, sizeof(__frame) + name.length()))
+        if (ftruncate(shmf, sizeof(__frame) + name.length() + 1))
         {
             return TRUNCATE_SHM_FAULT;
         }
-        __frame *frame = (__frame *)mmap(nullptr, sizeof(__frame) + name.length(),
+        __frame *frame = (__frame *)mmap(nullptr, sizeof(__frame) + name.length() + 1,
                                          PROT_READ | PROT_WRITE, MAP_SHARED, shmf, 0);
         close(shmf);
 
