@@ -78,7 +78,7 @@ void make_bwl_dev()
 #endif
     mkdir((BWLDIR + "/pages").c_str(), 0755);
     mkdir((BWLDIR + "/frames").c_str(), 0755);
-    mkdir((BWLDIR + "/responds").c_str(), 0755);
+    mkdir((BWLDIR + "/reply").c_str(), 0755);
 }
 
 /**
