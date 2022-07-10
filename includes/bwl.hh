@@ -5,8 +5,7 @@
 
 namespace bwl
 {
-
-
+    void initBadWayland();
 };
 
 #endif

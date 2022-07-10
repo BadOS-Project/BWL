@@ -3,6 +3,8 @@
 #include "../includes/bwl.hh"
 #include "../includes/pipe.hh"
 
+#include "../dbg/logs.hh"
+
 namespace std
 {
 #include <unistd.h>
@@ -25,9 +27,26 @@ namespace std
 };
 
 #include <iostream>
+#include <fstream>
 
 namespace bwl
 {
+    namespace bad_wayland_server
+    {
+        pid_t server_pid;
+    };
+
+    void initBadWayland()
+    {
+        std::fstream host(BWLDIR + "/host", std::ios::in);
+        if(!host.good())
+        {
+            host.close();
+            bwl_exit(-1);
+        }
+        host >> bad_wayland_server::server_pid;
+        host.close();
+    }
 
     __page *createPage(id_t pgid)
     {
@@ -37,6 +56,11 @@ namespace bwl
         rp->pid = std::getpid();
         rp->magic = REQMAGIC;
         rp->arguments.a_create_page.bgspace = colorspace::rgb;
+        Pipe push("/dev/bwl/reciever.pipe", bwl::Pipe::out);
+        push.write((char *)rp, sizeof(req_pack));
+        push.close();
+        std::kill(bad_wayland_server::server_pid, SIGBWLREQ);
+        delete rp;
         //等待服务器回复
         Pipe getting(BWLDIR + "/reply/" + std::to_string(std::getpid()) + ".pipe", Pipe::in);
         getting.read((char *)&pgid, sizeof(id_t));
@@ -67,6 +91,25 @@ namespace bwl
         }
 
         return page;
+    }
+
+    void deletePage(__page *page)
+    {
+        int pgid = page->pgid;
+        std::munmap(page->client_bg_layer, getBgBuffSize());
+        std::shm_unlink((PAGEDIR + std::to_string(pgid) + "bgbuffer").c_str());
+        std::munmap(page, sizeof(__page));
+        std::shm_unlink((PAGEDIR + std::to_string(pgid) + "shm").c_str());
+        req_pack *rp = new req_pack;
+        rp->request = requests::del_page;
+        rp->pid = std::getpid();
+        rp->magic = REQMAGIC;
+        rp->arguments.a_del_page.pgid = pgid;
+        Pipe push("/dev/bwl/reciever.pipe", bwl::Pipe::out);
+        push.write((char *)rp, sizeof(req_pack));
+        push.close();
+        std::kill(bad_wayland_server::server_pid, SIGBWLREQ);
+        delete rp;
     }
 
 };

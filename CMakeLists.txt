@@ -3,7 +3,7 @@ project(BadWayland)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_library(bwl SHARED libs/bwl.cc)
+add_library(bwl SHARED libs/bwl.cc dbg/logs.cc)
 add_library(bsv SHARED libs/bsv.cc)
 add_library(bpipe SHARED libs/pipe.cc)
 
