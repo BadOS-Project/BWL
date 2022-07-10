@@ -52,18 +52,19 @@ namespace bwl
             switch (size)
             {
             case 1:
-                wrap = (*buffer == (int8_t)BPIPE_MAGIC) ? true : false;
+                wrap = (*buffer == (int8_t)BPIPE_MAGIC);
                 break;
             case 2 ... 3:
-                wrap = (*buffer == (int16_t)BPIPE_MAGIC) ? true : false;
+                wrap = (*buffer == (int16_t)BPIPE_MAGIC);
                 break;
             case 4 ... 7:
-                wrap = (*buffer == (int32_t)BPIPE_MAGIC) ? true : false;
+                wrap = (*buffer == (int32_t)BPIPE_MAGIC);
                 break;
             default:
-                wrap = (*buffer == (int64_t)BPIPE_MAGIC) ? true : false;
+                wrap = (*buffer == (int64_t)BPIPE_MAGIC);
                 break;
             }
+
             if (wrap)
             {
                 std::lseek(fd, 0, 0);
