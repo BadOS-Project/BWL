@@ -6,6 +6,10 @@
 namespace bwl
 {
 
+    /* wayland base data structure
+        基础数据结构
+    */
+
     const uint32_t MAX_OWNERS = 512;
     const uint32_t MAX_FRAMES = 512;
 
@@ -53,9 +57,9 @@ namespace bwl
         colorspace space;      //背景颜色空间
 
         id_t layer0[MAX_FRAMES]; // 0层
-        int l0c;
+        int l0c;                 // layer 0 counter
         id_t layer1[MAX_FRAMES]; // 1层
-        int l1c;
+        int l1c;                 // layer 0 counter
     };
 
     /**
@@ -103,6 +107,81 @@ namespace bwl
      * @param pix_depth
      */
     void setmonitor(int width, int height, int pix_depth);
+
+    /* client-server exchange
+        用户-服务器信息交流
+    */
+
+    enum requests
+    {
+        create_page,  //创建页
+        del_page,     //删除页
+        create_frame, //创建窗口
+        del_frame,    //删除窗口
+        switch_as,    //切换顶层窗口
+        wakeup,       //唤醒使服务器刷新屏幕
+    };
+
+#define REQMAGIC 0xa68c5cce7be74433
+
+#define SIGBWLREQ 38
+
+    struct arg_req_creafra
+    {
+        id_t pgid;
+        uint64_t size[2];
+        int64_t pos[2];
+        int namelen;
+        char name[128];
+        colorspace space;
+    };
+
+    struct arg_req_delfra
+    {
+        id_t fid;
+    };
+
+    struct arg_req_creapg
+    {
+        colorspace bgspace;
+    };
+
+    struct arg_req_delpg
+    {
+        id_t pgid;
+    };
+
+    struct arg_req_switch
+    {
+        id_t pgid;
+        id_t fid;
+    };
+
+    union arg_req_t
+    {
+        arg_req_creafra a_create_frame;
+        arg_req_delfra a_del_frame;
+        arg_req_creapg a_create_page;
+        arg_req_delpg a_del_page;
+    };
+
+    /**
+     * @brief 请求包
+     *
+     * 包括请求类型，
+     * 进程号，
+     * 请求带有的参数，
+     * 魔数(防止其它程序向管道乱发数据，魔数没有对应则扔掉此请求)
+     *
+     */
+    struct req_pack
+    {
+        requests request;
+        pid_t pid;
+        uint64_t magic;
+        arg_req_t arguments;
+    };
+
 };
 
 #endif

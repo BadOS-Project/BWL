@@ -1,5 +1,7 @@
 #include "reqrec.hh"
 
+#include <cstring>
+
 extern std::map<bwl::id_t, bwl::__page *> pages; //页列表
 uint64_t pgcount;
 extern bwl::id_t current_pgid; //当前页
@@ -17,12 +19,14 @@ namespace bwl
         __page *pg = createPage(pgcount++);
         pg->space = rp->arguments.a_create_page.bgspace;
         pages[pg->pgid] = pg;
+        pg->owners[0] = rp->pid;
     }
 
     void do_delete_page(req_pack *rp)
     {
         deletePage(pages.at(rp->arguments.a_del_page.pgid));
         pages.erase(rp->arguments.a_del_page.pgid);
+        memset(pages.at(rp->arguments.a_del_page.pgid)->owners, 0, MAX_OWNERS * sizeof(pid_t));
     }
 
     void do_create_frame(req_pack *rp)
@@ -38,12 +42,14 @@ namespace bwl
         );
         fr->space = rp->arguments.a_create_frame.space;
         frames[fr->fid] = fr;
+        fr->owner = rp->pid;
     }
 
     void do_delete_frame(req_pack *rp)
     {
         deleteFrame(frames[rp->arguments.a_del_frame.fid]);
         frames.erase(rp->arguments.a_del_frame.fid);
+        frames.at(rp->arguments.a_del_frame.fid)->owner = 0;
     }
 
     /**
