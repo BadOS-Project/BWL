@@ -108,6 +108,13 @@ namespace bwl
      */
     void setmonitor(int width, int height, int pix_depth);
 
+    /**
+     * @brief 获取背景缓冲大小
+     *
+     * @return uint64_t
+     */
+    uint64_t getBgBuffSize(); // TODO 未实现
+
     /* client-server exchange
         用户-服务器信息交流
     */
@@ -121,10 +128,6 @@ namespace bwl
         switch_as,    //切换顶层窗口
         wakeup,       //唤醒使服务器刷新屏幕
     };
-
-#define REQMAGIC 0xa68c5cce7be74433
-
-#define SIGBWLREQ 38
 
     struct arg_req_creafra
     {
