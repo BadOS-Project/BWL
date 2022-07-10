@@ -15,6 +15,11 @@ namespace bwl
     int pix_depth;
 #define BGBUFSIZE (monitor_size[0] * monitor_size[1] * pix_depth)
 
+    uint64_t getBgBuffSize()
+    {
+        return monitor_size[0] * monitor_size[1] * pix_depth;
+    }
+
     /**
      * @brief 创建页
      *

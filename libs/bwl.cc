@@ -34,18 +34,26 @@ namespace bwl
     namespace bad_wayland_server
     {
         pid_t server_pid;
+        uint64_t monitor_size[2];
+        int pix_depth;
     };
 
-    void initBadWayland()
+    void initBadWayland(std::string __monitor_device)
     {
         std::fstream host(BWLDIR + "/host", std::ios::in);
-        if(!host.good())
+        if (!host.good())
         {
             host.close();
             bwl_exit(-1);
         }
         host >> bad_wayland_server::server_pid;
         host.close();
+        //TODO 向wayland服务器询问屏幕设备大小和像素深度
+    }
+
+    uint64_t getBgBuffSize()
+    {
+        return bad_wayland_server::monitor_size[0] * bad_wayland_server::monitor_size[1] * bad_wayland_server::pix_depth;
     }
 
     __page *createPage(id_t pgid)

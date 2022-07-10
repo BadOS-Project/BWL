@@ -5,7 +5,7 @@
 
 namespace bwl
 {
-    void initBadWayland();
+    void initBadWayland(std::string __monitor_device);
 };
 
 #endif
