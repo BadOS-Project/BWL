@@ -4,11 +4,11 @@
 #include <iostream>
 
 extern std::map<bwl::id_t, bwl::__page *> pages; //页列表
-uint64_t pgcount;
+uint64_t pgcount = 1;
 extern bwl::id_t current_pgid; //当前页
 
 extern std::map<bwl::id_t, bwl::__frame *> frames; //窗口列表
-uint64_t frcount;
+uint64_t frcount = 1;
 
 extern bwl::Pipe server_recv;
 
