@@ -6,15 +6,6 @@
 namespace bwl
 {
 
-    class Page
-    {
-    private:
-        __page *page;
-
-    public:
-        Page();
-        ~Page();
-    };
 
 };
 
