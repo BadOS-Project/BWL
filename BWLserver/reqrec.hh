@@ -3,6 +3,8 @@
 
 #include "../includes/pipe.hh"
 #include "../includes/bsv.hh"
+
+#include <signal.h>
 #include <map>
 
 namespace bwl

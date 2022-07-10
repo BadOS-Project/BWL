@@ -1,6 +1,7 @@
 #include "reqrec.hh"
 
 #include <cstring>
+#include <iostream>
 
 extern std::map<bwl::id_t, bwl::__page *> pages; //页列表
 uint64_t pgcount;
@@ -62,16 +63,19 @@ namespace bwl
         server_recv.read((char *)rp, sizeof(req_pack));
         if (rp->magic != REQMAGIC)
             return;
+        id_t id;
         switch (rp->request)
         {
         case requests::create_page:
             do_create_page(rp);
+            id = pgcount-1;
             break;
         case requests::del_page:
             do_delete_page(rp);
             break;
         case requests::create_frame:
             do_create_frame(rp);
+            id=frcount-1;
             break;
         case requests::del_frame:
             do_delete_frame(rp);
@@ -79,5 +83,8 @@ namespace bwl
         default:
             break;
         }
+        Pipe reply(BWLDIR + "/reply/" + std::to_string(rp->pid) + ".pipe", Pipe::out);
+        reply.write((char *)&id, sizeof(id_t));
+        reply.close();
     }
 };
