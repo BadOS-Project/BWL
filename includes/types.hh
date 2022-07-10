@@ -6,6 +6,10 @@
 
 extern std::string monitor_device;
 
+#define SIGBWLREQ 38
+#define SIGREQRECV 35
+#define REQMAGIC 0xa68c5cce7be74433
+
 #define BWLDIR (std::string("/dev/bwl(") + monitor_device + ")")
 #define PAGEDIR (std::string("/dev/bwl(") + monitor_device + ")/pages/")
 #define FRMDIR (std::string("/dev/bwl(") + monitor_device + ")/frames/")
