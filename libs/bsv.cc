@@ -32,7 +32,7 @@ namespace bwl
     __page *createPage(id_t pgid)
     {
         mkdir((PAGEDIR + std::to_string(pgid)).c_str(), 0755);
-        int shmf = shm_open((PAGEDIR + std::to_string(pgid) + "shm").c_str(), O_RDWR | O_EXCL, 0);
+        int shmf = shm_open((PAGEDIR + std::to_string(pgid) + "/shm").c_str(), O_RDWR | O_EXCL, 0);
         if (shmf == -1)
         {
             return CREATE_PAGE_FAULT;
@@ -49,7 +49,7 @@ namespace bwl
         if (page != (__page *)-1)
         {
             page->pgid = pgid;
-            shmf = shm_open((PAGEDIR + std::to_string(pgid) + "bgbuffer").c_str(), O_RDWR | O_EXCL, 0);
+            shmf = shm_open((PAGEDIR + std::to_string(pgid) + "/bgbuffer").c_str(), O_RDWR | O_EXCL, 0);
             if (shmf == -1)
             {
                 return CREATE_PAGE_FAULT;
@@ -63,7 +63,7 @@ namespace bwl
             if (page->server_bg_layer == (void *)-1)
             {
                 munmap(page, sizeof(__page));
-                shm_unlink((PAGEDIR + std::to_string(pgid) + "shm").c_str());
+                shm_unlink((PAGEDIR + std::to_string(pgid) + "/shm").c_str());
                 return (__page *)MAP_FAILED;
             }
         }
@@ -75,9 +75,9 @@ namespace bwl
     {
         int pgid = page->pgid;
         munmap(page->server_bg_layer, BGBUFSIZE);
-        shm_unlink((PAGEDIR + std::to_string(pgid) + "bgbuffer").c_str());
+        shm_unlink((PAGEDIR + std::to_string(pgid) + "/bgbuffer").c_str());
         munmap(page, sizeof(__page));
-        shm_unlink((PAGEDIR + std::to_string(pgid) + "shm").c_str());
+        shm_unlink((PAGEDIR + std::to_string(pgid) + "/shm").c_str());
         rmdir((PAGEDIR + std::to_string(pgid)).c_str());
     }
 
@@ -97,7 +97,7 @@ namespace bwl
     __frame *createFrame(id_t fid, __page *page, std::string name, uint64_t width, uint64_t height, int64_t x, int64_t y)
     {
         mkdir((FRMDIR + std::to_string(fid)).c_str(), 0755);
-        int shmf = shm_open((FRMDIR + std::to_string(fid) + "shm").c_str(), O_RDWR | O_EXCL, 0);
+        int shmf = shm_open((FRMDIR + std::to_string(fid) + "/shm").c_str(), O_RDWR | O_EXCL, 0);
         if (shmf == -1)
         {
             return CREATE_FRAME_FAULT;
@@ -126,8 +126,9 @@ namespace bwl
             frame->size[1] = height;
             frame->pos[0] = x;
             frame->pos[1] = y;
+            frame->pixdepth = pix_depth;
 
-            shmf = shm_open((FRMDIR + std::to_string(fid) + "buffer").c_str(), O_RDWR | O_EXCL, 0);
+            shmf = shm_open((FRMDIR + std::to_string(fid) + "/buffer").c_str(), O_RDWR | O_EXCL, 0);
             if (shmf == -1)
             {
                 return CREATE_FRAME_FAULT;
@@ -141,7 +142,7 @@ namespace bwl
             if (frame->server_buf == (void *)-1)
             {
                 munmap(frame, sizeof(__frame));
-                shm_unlink((FRMDIR + std::to_string(fid) + "shm").c_str());
+                shm_unlink((FRMDIR + std::to_string(fid) + "/shm").c_str());
                 return (__frame *)MAP_FAILED;
             }
         }
@@ -156,9 +157,9 @@ namespace bwl
     {
         int fid = frame->fid;
         munmap(frame->server_buf, frame->size[0] * frame->size[1] * pix_depth);
-        shm_unlink((FRMDIR + std::to_string(fid) + "buffer").c_str());
+        shm_unlink((FRMDIR + std::to_string(fid) + "/buffer").c_str());
         munmap(frame, sizeof(__frame) + frame->namelen);
-        shm_unlink((FRMDIR + std::to_string(fid) + "shm").c_str());
+        shm_unlink((FRMDIR + std::to_string(fid) + "/shm").c_str());
         rmdir((FRMDIR + std::to_string(fid)).c_str());
     }
 
