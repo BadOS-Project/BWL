@@ -101,6 +101,8 @@ namespace bwl
      */
     void deleteFrame(__frame *);
 
+#ifndef __bwl_hh_//用户库中没有此函数
+
     /**
      * @brief 设置显示器参数
      *
@@ -109,13 +111,14 @@ namespace bwl
      * @param pix_depth
      */
     void setmonitor(int width, int height, int pix_depth);
+#endif
 
     /**
      * @brief 获取背景缓冲大小
      *
      * @return uint64_t
      */
-    uint64_t getBgBuffSize(); // TODO 未实现
+    uint64_t getBgBuffSize();//TODO bwl.cc 没有实现
 
     /* client-server exchange
         用户-服务器信息交流
