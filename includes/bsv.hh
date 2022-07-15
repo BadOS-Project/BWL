@@ -43,6 +43,8 @@ namespace bwl
         int64_t refrloc[2]; //刷新区域位置
         uint64_t refrsz[2]; //刷新区域大小
 
+        int pixdepth;//像素深度
+
         int namelen;  //窗口名长度
         char name[0]; //窗口名
     };
