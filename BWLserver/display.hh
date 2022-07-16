@@ -17,6 +17,13 @@ namespace bwl
      * 
      */
     void destoryDisplay();
+
+    /**
+     * @brief 获取buffer
+     * 
+     * @return void* 
+     */
+    void *getDrmBuffer();
 };
 
 #endif

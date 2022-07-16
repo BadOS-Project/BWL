@@ -69,4 +69,9 @@ namespace bwl
         drmModeFreeResources(__display.res);
         close(__display.fd);
     }
+
+    void *getDrmBuffer()
+    {
+        return __display.buffer;
+    }
 };
