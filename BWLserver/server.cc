@@ -17,5 +17,6 @@ int main(int argc, char **argv)
     make_bwl_dev();
     start_bwl_server();
     sleep(1);
+    bwl::destoryDisplay();
     bwl::bwl_exit(0);
 }

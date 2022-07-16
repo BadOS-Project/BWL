@@ -34,6 +34,8 @@
 #include "../includes/pipe.hh"
 #include "reqrec.hh"
 
+#include "display.hh"
+
 // TODO 正式发布时去掉
 #define DEBUGGING
 
@@ -88,6 +90,8 @@ void start_bwl_server()
 {
     server_recv.open("/dev/bwl/reciever.pipe", bwl::Pipe::in);
     signal(SIGBWLREQ, bwl::reqrec);
+    bwl::initDisplay(monitor_device);
+    char *buffer = (char *)bwl::getDrmBuffer();
 }
 
 #endif
