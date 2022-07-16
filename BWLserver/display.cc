@@ -74,4 +74,14 @@ namespace bwl
     {
         return __display.buffer;
     }
+
+    uint64_t getDisplayWidth()
+    {
+        return __display.create.width;
+    }
+
+    uint64_t getDisplayHeight()
+    {
+        return __display.create.height;
+    }
 };

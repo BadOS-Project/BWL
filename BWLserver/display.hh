@@ -24,6 +24,22 @@ namespace bwl
      * @return void* 
      */
     void *getDrmBuffer();
+
+    /**
+     * @brief 获取屏幕宽度
+     * 
+     * @return uint64_t 
+     */
+    uint64_t getDisplayWidth();
+
+    /**
+     * @brief 获取屏幕高度
+     * 
+     * @return uint64_t 
+     */
+    uint64_t getDisplayHeight();
+
+#define getDisplayPixDpt() 4
 };
 
 #endif
