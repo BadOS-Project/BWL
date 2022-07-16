@@ -120,6 +120,27 @@ namespace bwl
      */
     uint64_t getBgBuffSize();//TODO bwl.cc 没有实现
 
+    /**
+     * @brief 获取显示器宽
+     * 
+     * @return uint64_t 
+     */
+    uint64_t getMonitorWidth();
+
+    /**
+     * @brief 获取显示器高
+     * 
+     * @return uint64_t 
+     */
+    uint64_t getMonitorHeight();
+
+    /**
+     * @brief 获取像素深度
+     * 
+     * @return int 
+     */
+    int getPixDepth();
+
     /* client-server exchange
         用户-服务器信息交流
     */

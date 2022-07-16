@@ -20,6 +20,21 @@ namespace bwl
         return monitor_size[0] * monitor_size[1] * pix_depth;
     }
 
+    uint64_t getMonitorWidth()
+    {
+        return monitor_size[0];
+    }
+
+    uint64_t getMonitorHeight()
+    {
+        return monitor_size[1];
+    }
+
+    int getPixDepth()
+    {
+        return pix_depth;
+    }
+
     /**
      * @brief 创建页
      *
