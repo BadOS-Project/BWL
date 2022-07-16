@@ -52,11 +52,6 @@ namespace bwl
         ff >> bad_wayland_server::monitor_size[0] >> bad_wayland_server::monitor_size[1] >> bad_wayland_server::pix_depth;
     }
 
-    uint64_t getBgBuffSize()
-    {
-        return bad_wayland_server::monitor_size[0] * bad_wayland_server::monitor_size[1] * bad_wayland_server::pix_depth;
-    }
-
     __page *createPage(id_t pgid)
     {
         //发送请求
