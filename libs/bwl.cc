@@ -48,7 +48,8 @@ namespace bwl
         }
         host >> bad_wayland_server::server_pid;
         host.close();
-        // TODO 向wayland服务器询问屏幕设备大小和像素深度
+        std::fstream ff(BWLDIR + "/data/monitor", std::ios::in);
+        ff >> bad_wayland_server::monitor_size[0] >> bad_wayland_server::monitor_size[1] >> bad_wayland_server::pix_depth;
     }
 
     uint64_t getBgBuffSize()
@@ -190,6 +191,26 @@ namespace bwl
         push.close();
         std::kill(bad_wayland_server::server_pid, SIGBWLREQ);
         delete rp;
+    }
+
+    uint64_t getBgBuffSize()
+    {
+        return bad_wayland_server::monitor_size[0] * bad_wayland_server::monitor_size[1] * bad_wayland_server::pix_depth;
+    }
+
+    uint64_t getMonitorWidth()
+    {
+        return bad_wayland_server::monitor_size[0];
+    }
+
+    uint64_t getMonitorHeight()
+    {
+        return bad_wayland_server::monitor_size[1];
+    }
+
+    int getPixDepth()
+    {
+        return bad_wayland_server::pix_depth;
     }
 
 };

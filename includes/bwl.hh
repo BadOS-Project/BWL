@@ -18,6 +18,7 @@ namespace bwl
      * @param __monitor_device 
      */
     void initBadWayland(std::string __monitor_device);
+
 };
 
 #endif
