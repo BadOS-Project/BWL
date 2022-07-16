@@ -141,6 +141,7 @@ namespace bwl
      */
     int getPixDepth();
 
+
     /* client-server exchange
         用户-服务器信息交流
     */
