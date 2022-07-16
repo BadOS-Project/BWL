@@ -59,7 +59,6 @@ void switch_to_daemon()
         bwl::err(std::string("bad wayland must be started with root.(") + getpwuid(getuid())->pw_name + " now)");
         bwl::bwl_exit(-3);
     }
-    // std::string dir = std::string("/home/") + getpwuid(getuid())->pw_name + "/";
     chdir("/root/");
     mkdir(".bwl", 0755);
     daemon(1, 1);
