@@ -4,6 +4,9 @@
 #include <iostream>
 #include <vector>
 
+#define BWL_VERSION "0.0.01"
+#define BWLS_VERSION "0.0.01"
+
 extern std::string monitor_device;
 
 #define SIGBWLREQ 38
