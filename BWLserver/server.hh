@@ -70,6 +70,7 @@ void switch_to_daemon()
 void make_bwl_dev()
 {
     mkdir(BWLDIR.c_str(), 0755);
+    mkdir((BWLDIR + "/data").c_str(), 0755);
     std::fstream host(BWLDIR + "/host", std::ios::out); //为用户提供bwl服务器的进程号
     host << getpid() << std::endl;
     host.close();
@@ -92,6 +93,8 @@ void start_bwl_server()
     signal(SIGBWLREQ, bwl::reqrec);
     bwl::initDisplay(monitor_device);
     char *buffer = (char *)bwl::getDrmBuffer();
+    std::fstream data(BWLDIR + "/data/monitor", std::ios::out);
+    data << bwl::getDisplayWidth() << '\n' << bwl::getDisplayHeight() << '\n' << getDisplayPixDpt();
 }
 
 #endif
