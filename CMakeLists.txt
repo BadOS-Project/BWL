@@ -9,5 +9,5 @@ add_library(bpipe SHARED libs/pipe.cc)
 
 link_directories(build)
 
-add_executable(bwl-server BWLserver/server.cc dbg/logs.cc BWLserver/reqrec.cc)
+add_executable(bwl-server BWLserver/server.cc dbg/logs.cc BWLserver/reqrec.cc BWLserver/display.cc)
 target_link_libraries(bwl-server libbsv.so libbpipe.so librt.so libdrm.so)
