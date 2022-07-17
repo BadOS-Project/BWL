@@ -25,6 +25,7 @@
 #include <libdrm/drm.h>
 
 #include <cstring>
+#include <thread>
 
 #include "../dbg/logs.hh"
 
@@ -35,6 +36,7 @@
 #include "reqrec.hh"
 
 #include "display.hh"
+#include "threads.hh"
 
 // TODO 正式发布时去掉
 #define DEBUGGING
@@ -85,6 +87,8 @@ void make_bwl_dev()
     mkdir((BWLDIR + "/reply").c_str(), 0755);
 }
 
+std::thread *update_drm_buffer;
+
 /**
  * @brief 启动bwl显示服务器
  */
@@ -99,8 +103,27 @@ void start_bwl_server()
          << bwl::getDisplayHeight() << '\n'
          << getDisplayPixDpt();
     data.close();
-    int w = bwl::getDisplayWidth();
-    int h = bwl::getDisplayHeight();
+    bwl::setmonitor(bwl::getDisplayWidth(), bwl::getDisplayHeight(), getDisplayPixDpt());
+    bwl::drm_buffer = buffer;
+    bwl::log("init finished.");
+    //初始化完成
+    //初始化数据
+    bwl::__page *p0 = bwl::createPage(0);
+    if (p0 == (bwl::__page *)-2)
+    {
+        bwl::bwl_exit(30);
+    }
+    pages[0] = p0;
+    current_pgid = 0;
+    pages[0]->owners[pages[0]->ownerc++] = getpid();
+    for (int i = 0; i < 10; i++)
+        for (int j = 0; j < 10; j++)
+        {
+            buffer_at(p0->server_bg_layer, i, j, bwl::getDisplayWidth()) = 0x00ffffff;
+        }
+    //启动线程
+    bwl::updateDrmBuffer();
+    bwl::log("first print");
 }
 
 #endif
