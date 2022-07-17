@@ -28,7 +28,7 @@ namespace std
 
 #include <iostream>
 #include <fstream>
-//TODO 修改shm路径
+
 namespace bwl
 {
     namespace bad_wayland_server
@@ -70,7 +70,7 @@ namespace bwl
         getting.read((char *)&pgid, sizeof(id_t));
         getting.close();
         //获取数据结构
-        int shmf = std::shm_open((PAGEDIR + std::to_string(pgid) + "/shm").c_str(), O_RDWR | O_CREAT, 0);
+        int shmf = std::shm_open((SHMPAGEDIR + std::to_string(pgid) + "_shm").c_str(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
         if (shmf == -1)
         {
             return CREATE_PAGE_FAULT;
@@ -79,7 +79,7 @@ namespace bwl
         std::close(shmf);
         if (page != (__page *)-1)
         {
-            shmf = std::shm_open((PAGEDIR + std::to_string(pgid) + "/bgbuffer").c_str(), O_RDWR | O_CREAT, 0);
+            shmf = std::shm_open((SHMPAGEDIR + std::to_string(pgid) + "_bgbuffer").c_str(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
             if (shmf == -1)
             {
                 return CREATE_PAGE_FAULT;
@@ -89,7 +89,7 @@ namespace bwl
             if (page->client_bg_layer == (void *)-1)
             {
                 std::munmap(page, sizeof(__page));
-                std::shm_unlink((PAGEDIR + std::to_string(pgid) + "/shm").c_str());
+                std::shm_unlink((SHMPAGEDIR + std::to_string(pgid) + "_shm").c_str());
                 return (__page *)MAP_FAILED;
             }
         }
@@ -101,9 +101,9 @@ namespace bwl
     {
         int pgid = page->pgid;
         std::munmap(page->client_bg_layer, getBgBuffSize());
-        std::shm_unlink((PAGEDIR + std::to_string(pgid) + "/bgbuffer").c_str());
+        std::shm_unlink((SHMPAGEDIR + std::to_string(pgid) + "_bgbuffer").c_str());
         std::munmap(page, sizeof(__page));
-        std::shm_unlink((PAGEDIR + std::to_string(pgid) + "/shm").c_str());
+        std::shm_unlink((SHMPAGEDIR + std::to_string(pgid) + "_shm").c_str());
         req_pack *rp = new req_pack;
         rp->request = requests::del_page;
         rp->pid = std::getpid();
@@ -141,7 +141,7 @@ namespace bwl
         getting.read((char *)&fid, sizeof(id_t));
         getting.close();
         //映射数据
-        int shmf = std::shm_open((FRMDIR + std::to_string(fid) + "/shm").c_str(), O_RDWR | O_CREAT, 0);
+        int shmf = std::shm_open((SHMFRMDIR + std::to_string(fid) + "_shm").c_str(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
         if (shmf == -1)
         {
             return CREATE_FRAME_FAULT;
@@ -152,7 +152,7 @@ namespace bwl
 
         if (frame != (__frame *)-1)
         {
-            shmf = std::shm_open((FRMDIR + std::to_string(fid) + "/buffer").c_str(), O_RDWR | O_EXCL, 0);
+            shmf = std::shm_open((SHMFRMDIR + std::to_string(fid) + "_buffer").c_str(), O_RDWR | O_EXCL, S_IRUSR | S_IWUSR);
             if (shmf == -1)
             {
                 return CREATE_FRAME_FAULT;
@@ -162,7 +162,7 @@ namespace bwl
             if (frame->client_buf == (void *)-1)
             {
                 std::munmap(frame, sizeof(__frame));
-                std::shm_unlink((FRMDIR + std::to_string(fid) + "/shm").c_str());
+                std::shm_unlink((SHMFRMDIR + std::to_string(fid) + "_shm").c_str());
                 return (__frame *)MAP_FAILED;
             }
         }
@@ -173,9 +173,9 @@ namespace bwl
     {
         int fid = frame->fid;
         std::munmap(frame->client_buf, frame->size[0] * frame->size[1] * frame->pixdepth);
-        std::shm_unlink((FRMDIR + std::to_string(fid) + "/buffer").c_str());
+        std::shm_unlink((SHMFRMDIR + std::to_string(fid) + "_buffer").c_str());
         std::munmap(frame, sizeof(__frame) + frame->namelen);
-        std::shm_unlink((FRMDIR + std::to_string(fid) + "/shm").c_str());
+        std::shm_unlink((SHMFRMDIR + std::to_string(fid) + "_shm").c_str());
         req_pack *rp = new req_pack;
         rp->request = requests::del_frame;
         rp->pid = std::getpid();
