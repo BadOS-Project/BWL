@@ -36,8 +36,10 @@ int main(int argc, char **argv)
     bwl::log("Bwl starting.");
     bwl::log("making bwl device.");
     make_bwl_dev();
+    bwl::log("starting bad wayland server.");
     start_bwl_server();
-    sleep(10);
+    bwl::log("OK");
+    sleep(2);
     bwl::destoryDisplay();
     bwl::bwl_exit(0);
 }

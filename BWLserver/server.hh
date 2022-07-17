@@ -101,21 +101,6 @@ void start_bwl_server()
     data.close();
     int w = bwl::getDisplayWidth();
     int h = bwl::getDisplayHeight();
-    for (int i = 0; i < w; i++)
-    {
-        for (int j = 0; j < h / 3; j++)
-        {
-            buffer_at(buffer, i, j, w) = (0xff * i / w) << 16;
-        }
-        for (int j = h / 3; j < 2 * h / 3; j++)
-        {
-            buffer_at(buffer, i, j, w) = (0xff * i / w) << 8;
-        }
-        for (int j = 2 * h / 3; j < h; j++)
-        {
-            buffer_at(buffer, i, j, w) = (0xff * i / w) << 0;
-        }
-    }
 }
 
 #endif
