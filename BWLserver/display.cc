@@ -36,6 +36,7 @@ struct display
 
 namespace bwl
 {
+
     void initDisplay(std::string __card_dvc)
     {
         __display.fd = open((std::string("/dev/dri/card") + __card_dvc).c_str(), O_RDWR | O_CLOEXEC); //打开显卡设备文件

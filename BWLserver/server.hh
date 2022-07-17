@@ -39,6 +39,8 @@
 // TODO 正式发布时去掉
 #define DEBUGGING
 
+#define buffer_at(buffer, x, y, width) ((uint32_t *)buffer)[x + y * width]
+
 std::string monitor_device = "";
 
 std::map<bwl::id_t, bwl::__page *> pages; //页列表
@@ -93,7 +95,27 @@ void start_bwl_server()
     bwl::initDisplay(monitor_device);
     char *buffer = (char *)bwl::getDrmBuffer();
     std::fstream data(BWLDIR + "/data/monitor", std::ios::out);
-    data << bwl::getDisplayWidth() << '\n' << bwl::getDisplayHeight() << '\n' << getDisplayPixDpt();
+    data << bwl::getDisplayWidth() << '\n'
+         << bwl::getDisplayHeight() << '\n'
+         << getDisplayPixDpt();
+    data.close();
+    int w = bwl::getDisplayWidth();
+    int h = bwl::getDisplayHeight();
+    for (int i = 0; i < w; i++)
+    {
+        for (int j = 0; j < h / 3; j++)
+        {
+            buffer_at(buffer, i, j, w) = (0xff * i / w) << 16;
+        }
+        for (int j = h / 3; j < 2 * h / 3; j++)
+        {
+            buffer_at(buffer, i, j, w) = (0xff * i / w) << 8;
+        }
+        for (int j = 2 * h / 3; j < h; j++)
+        {
+            buffer_at(buffer, i, j, w) = (0xff * i / w) << 0;
+        }
+    }
 }
 
 #endif
