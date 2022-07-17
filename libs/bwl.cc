@@ -28,7 +28,7 @@ namespace std
 
 #include <iostream>
 #include <fstream>
-
+//TODO 修改shm路径
 namespace bwl
 {
     namespace bad_wayland_server
