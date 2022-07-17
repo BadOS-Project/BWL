@@ -58,6 +58,7 @@ namespace bwl
         }
         __page *page = (__page *)mmap(nullptr, sizeof(__page), PROT_READ | PROT_WRITE, MAP_SHARED, shmf, 0);
         close(shmf);
+        memset(page, 0, sizeof(__page));
 
         //如果成功链接共享内存
         //创建背景缓冲
@@ -124,6 +125,7 @@ namespace bwl
         __frame *frame = (__frame *)mmap(nullptr, sizeof(__frame) + name.length() + 1,
                                          PROT_READ | PROT_WRITE, MAP_SHARED, shmf, 0);
         close(shmf);
+        memset(frame, 0, sizeof(__frame) + name.length() + 1);
 
         //如果成功链接共享内存
         //初始化窗口数据，创建缓冲

@@ -43,7 +43,7 @@ namespace bwl
         int64_t refrloc[2]; //刷新区域位置
         uint64_t refrsz[2]; //刷新区域大小
 
-        int pixdepth;//像素深度
+        int pixdepth; //像素深度
 
         int namelen;  //窗口名长度
         char name[0]; //窗口名
@@ -53,6 +53,7 @@ namespace bwl
     {
         id_t pgid;                //页id
         pid_t owners[MAX_OWNERS]; //所有所属进程
+        int ownerc;               // owners counter
 
         void *server_bg_layer; // bwl使用的背景层缓冲区
         void *client_bg_layer; //用户程序使用的背景层缓冲区
@@ -101,7 +102,7 @@ namespace bwl
      */
     void deleteFrame(__frame *);
 
-#ifndef __bwl_hh_//用户库中没有此函数
+#ifndef __bwl_hh_ //用户库中没有此函数
 
     /**
      * @brief 设置显示器参数
@@ -118,29 +119,28 @@ namespace bwl
      *
      * @return uint64_t
      */
-    uint64_t getBgBuffSize();//TODO bwl.cc 没有实现
+    uint64_t getBgBuffSize(); // TODO bwl.cc 没有实现
 
     /**
      * @brief 获取显示器宽
-     * 
-     * @return uint64_t 
+     *
+     * @return uint64_t
      */
     uint64_t getMonitorWidth();
 
     /**
      * @brief 获取显示器高
-     * 
-     * @return uint64_t 
+     *
+     * @return uint64_t
      */
     uint64_t getMonitorHeight();
 
     /**
      * @brief 获取像素深度
-     * 
-     * @return int 
+     *
+     * @return int
      */
     int getPixDepth();
-
 
     /* client-server exchange
         用户-服务器信息交流
