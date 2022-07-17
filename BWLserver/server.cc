@@ -1,9 +1,9 @@
 #include "server.hh"
 
-#define USEAGE                                                                                \
-    "usage: bwl-server [options]" << std::endl                                                \
-                                  << "The options contains:" << std::endl                     \
-                                  << "\t-h | --help\tTo print this document." << std::endl    \
+#define USEAGE                                                                               \
+    "usage: bwl-server [options]" << std::endl                                               \
+                                  << "The options contains:" << std::endl                    \
+                                  << "\t-h | --help\tTo print this document." << std::endl   \
                                   << "\t-v | --version\tTo print version data." << std::endl \
                                   << "\t-c | --card\tTo choose which video card to use(card 0 as default)." << std::endl
 
