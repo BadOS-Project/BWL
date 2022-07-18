@@ -84,6 +84,7 @@ namespace bwl
             }
         }
 
+        bwl::log(std::string("created page") + std::to_string(pgid));
         return page;
     }
 
@@ -95,6 +96,7 @@ namespace bwl
         munmap(page, sizeof(__page));
         shm_unlink((SHMPAGEDIR + std::to_string(pgid) + "_shm").c_str());
         rmdir((PAGEDIR + std::to_string(pgid)).c_str());
+        bwl::log(std::string("deleted page") + std::to_string(pgid));
     }
 
     /**
@@ -163,6 +165,8 @@ namespace bwl
                 return (__frame *)MAP_FAILED;
             }
         }
+
+        bwl::log(std::string("created frame") + std::to_string(fid));
         return frame;
     }
 
@@ -178,6 +182,7 @@ namespace bwl
         munmap(frame, sizeof(__frame) + frame->namelen);
         shm_unlink((SHMFRMDIR + std::to_string(fid) + "_shm").c_str());
         rmdir((FRMDIR + std::to_string(fid)).c_str());
+        bwl::log(std::string("deleted frame") + std::to_string(fid));
     }
 
     /**
