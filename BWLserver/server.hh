@@ -130,7 +130,6 @@ void start_bwl_server()
     server_running = true;
     //启动线程
     update_drm_buffer = new std::thread(bwl::updateDrmBuffer);
-    bwl::log("first print");
 }
 
 #endif

@@ -36,7 +36,6 @@ namespace bwl
                 cfgfile.open(cfgpath + "server.cfg", std::ios::in | std::ios::out);
                 cfgfile << "fps 60\n";
             }
-            bwl::log("here");
             while (!cfgfile.eof())
             {
                 std::string str;
