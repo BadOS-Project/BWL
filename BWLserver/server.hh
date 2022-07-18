@@ -45,6 +45,8 @@
 
 std::string monitor_device = "";
 
+bool server_running; //服务器运行标志
+
 std::map<bwl::id_t, bwl::__page *> pages; //页列表
 bwl::id_t current_pgid;                   //当前页
 
@@ -70,6 +72,10 @@ void switch_to_daemon()
     freopen("./.bwl/bwl-err", "w", stderr);
 }
 
+/**
+ * @brief 创建bad wayland设备目录
+ * 
+ */
 void make_bwl_dev()
 {
     mkdir(BWLDIR.c_str(), 0755);
@@ -116,13 +122,14 @@ void start_bwl_server()
     pages[0] = p0;
     current_pgid = 0;
     pages[0]->owners[pages[0]->ownerc++] = getpid();
-    for (int i = 0; i < 10; i++)
-        for (int j = 0; j < 10; j++)
+    for (int i = 0; i < 100; i++)
+        for (int j = 0; j < 100; j++)
         {
             buffer_at(p0->server_bg_layer, i, j, bwl::getDisplayWidth()) = 0x00ffffff;
         }
+    server_running = true;
     //启动线程
-    bwl::updateDrmBuffer();
+    update_drm_buffer = new std::thread(bwl::updateDrmBuffer);
     bwl::log("first print");
 }
 

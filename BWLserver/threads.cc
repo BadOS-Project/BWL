@@ -9,6 +9,8 @@
 
 #include "../includes/bsv.hh"
 
+extern volatile bool server_running; //服务器运行标志
+
 extern std::map<bwl::id_t, bwl::__page *> pages; //页列表
 extern bwl::id_t current_pgid;                   //当前页
 
@@ -19,18 +21,27 @@ namespace bwl
 
     void *drm_buffer; //屏幕缓冲区
 
-    void updater(int)
+    uint8_t updating_signal = 1; //更新标志
+
+    /**
+     * @brief 更新函数
+     * 
+     */
+    void updater()
     {
+        if (!updateDrmBuffer)
+            return;
+        else
+            updating_signal = 0;
         memcpy(drm_buffer, pages[current_pgid]->server_bg_layer, getBgBuffSize());
     }
 
     void updateDrmBuffer()
     {
-        signal(SIGALRM, updater);
-        struct itimerval value;
-        value.it_value.tv_sec = 0;
-        value.it_value.tv_usec = 500;
-        value.it_interval = value.it_value;
-        setitimer(ITIMER_REAL, &value, NULL);
+        while (server_running)
+        {
+            usleep(1);
+            updater();
+        }
     }
 };
