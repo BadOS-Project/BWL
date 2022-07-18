@@ -26,25 +26,25 @@ namespace bwl
 
     /**
      * @brief 更新函数
-     * 
+     *
      */
     void updater()
     {
-        if (!updateDrmBuffer)
+        if (!updating_signal) //没有更新屏幕的需求就直接返回
             return;
         else
             updating_signal = 0;
-        memcpy(drm_buffer, pages[current_pgid]->server_bg_layer, getBgBuffSize());
+        memcpy(drm_buffer, pages[current_pgid]->server_bg_layer, getBgBuffSize()); //先将当前页的背景更新上去
     }
 
     void updateDrmBuffer()
     {
-        server::loadCfgFromFs(FPS_CFG);
-        useconds_t itv =  interval(server::getFPS());
+        server::loadCfgFromFs(FPS_CFG);              //加载帧率配置
+        useconds_t itv = interval(server::getFPS()); //获取帧率并换算为每帧时间间隔
         while (server_running)
         {
-            usleep(itv);
-            updater();
+            usleep(itv); //睡眠
+            updater();   //更新屏幕
         }
     }
 };
