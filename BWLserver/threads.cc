@@ -8,6 +8,7 @@
 #include <signal.h>
 
 #include "../includes/bsv.hh"
+#include "../includes/syscfg.hh"
 
 extern volatile bool server_running; //服务器运行标志
 
@@ -38,9 +39,11 @@ namespace bwl
 
     void updateDrmBuffer()
     {
+        server::loadCfgFromFs(FPS_CFG);
+        useconds_t itv =  interval(server::getFPS());
         while (server_running)
         {
-            usleep(1);
+            usleep(itv);
             updater();
         }
     }
