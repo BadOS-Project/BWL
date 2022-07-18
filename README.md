@@ -6,7 +6,13 @@ BadOS项目的所有程序只有在BadWayland完成后，才能够正常测试�
 
 目前已经接入linux drm，具备显示功能。
 
-代码阅读指引：
+## routine
+
+1. 用户的bwl.hh即将加入Page类和Frame类以方便用户程序使用。
+
+2. 屏幕刷新函数即将加入所有当前对象的刷新。
+
+## 代码阅读指引：
 
 ```bash
 1. includes/bsv.hh
