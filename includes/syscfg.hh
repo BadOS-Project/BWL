@@ -32,6 +32,14 @@ namespace bwl
          */
         void getMoniSize(uint64_t *width, uint64_t *height);
 
+        /**
+         * @brief 设置显示器大小
+         * 
+         * @param width 
+         * @param height 
+         */
+        void setMoniSize(uint64_t width, uint64_t height);
+
 #define interval(fps) (1000 / fps) //帧率转间隔
     };
 };

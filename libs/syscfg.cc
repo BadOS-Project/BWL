@@ -31,12 +31,13 @@ namespace bwl
             if (stat(cfgpath.c_str(), nullptr))
                 mkdir(cfgpath.c_str(), 0755);
             std::fstream cfgfile(cfgpath + "server.cfg", std::ios::in | std::ios::out);
-            if(!cfgfile.good())//文件不存在就新建配置
+            if (!cfgfile.good()) //文件不存在就新建配置
             {
                 creat((cfgpath + "server.cfg").c_str(), 0755);
                 cfgfile.close();
                 cfgfile.open(cfgpath + "server.cfg", std::ios::in | std::ios::out);
-                cfgfile << "fps 60\n";
+                cfgfile << "fps " << syscfg.fps << '\n'
+                        << "monisize " << syscfg.size[0] << ' ' << syscfg.size[1] << '\n';
             }
             while (!cfgfile.eof())
             {
@@ -47,7 +48,7 @@ namespace bwl
                     cfgfile >> syscfg.fps;
                     continue;
                 }
-                if((str == syscfg.i_monisize) && (opt & MONISIZE_CFG))
+                if ((str == syscfg.i_monisize) && (opt & MONISIZE_CFG))
                 {
                     cfgfile >> syscfg.size[0];
                     cfgfile >> syscfg.size[1];
@@ -64,6 +65,12 @@ namespace bwl
         {
             *width = syscfg.size[0];
             *height = syscfg.size[1];
+        }
+
+        void setMoniSize(uint64_t width, uint64_t height)
+        {
+            syscfg.size[0] = width;
+            syscfg.size[1] = height;
         }
     };
 };
