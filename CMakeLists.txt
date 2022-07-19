@@ -10,5 +10,5 @@ add_library(bsyscfg SHARED libs/syscfg.cc)
 
 link_directories(build)
 
-add_executable(bwl-server BWLserver/server.cc dbg/logs.cc BWLserver/reqrec.cc BWLserver/display.cc BWLserver/threads.cc)
+add_executable(bwl-server BWLserver/server.cc dbg/logs.cc BWLserver/reqrec.cc BWLserver/display.cc BWLserver/threads.cc BWLserver/update.cc)
 target_link_libraries(bwl-server libbsv.so libbpipe.so librt.so libdrm.so libpthread.so libbsyscfg.so)
