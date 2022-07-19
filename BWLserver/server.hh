@@ -33,10 +33,11 @@
 
 #include "../includes/bsv.hh"
 #include "../includes/pipe.hh"
-#include "reqrec.hh"
 
+#include "reqrec.hh"
 #include "display.hh"
 #include "threads.hh"
+#include "update.hh"
 
 // TODO 正式发布时去掉
 #define DEBUGGING
@@ -74,7 +75,7 @@ void switch_to_daemon()
 
 /**
  * @brief 创建bad wayland设备目录
- * 
+ *
  */
 void make_bwl_dev()
 {
@@ -94,6 +95,11 @@ void make_bwl_dev()
 }
 
 std::thread *update_drm_buffer;
+
+namespace bwl
+{
+    extern __updating_signals __ud;
+};
 
 /**
  * @brief 启动bwl显示服务器
@@ -128,6 +134,11 @@ void start_bwl_server()
             buffer_at(p0->server_bg_layer, i, j, bwl::getDisplayWidth()) = 0x00ffffff;
         }
     server_running = true;
+    bwl::__ud.__bg.sig = 1;
+    bwl::__ud.__bg.pos[0] = 0;
+    bwl::__ud.__bg.pos[1] = 0;
+    bwl::__ud.__bg.size[0] = 100;
+    bwl::__ud.__bg.size[1] = 100;
     //启动线程
     update_drm_buffer = new std::thread(bwl::updateDrmBuffer);
 }

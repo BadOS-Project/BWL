@@ -22,16 +22,16 @@ namespace bwl
 
     void update_bg()
     {
-        if(__ud.__bg.pos[0] == -1)
+        if (__ud.__bg.pos[0] == -1)
         {
             memcpy(drm_buffer, pages[current_pgid]->server_bg_layer, bgbuffsize);
             return;
         }
         for (int i = 0; i < __ud.__bg.size[1]; i++)
         {
-            memcpy(((uint32_t *)drm_buffer) + __ud.__bg.pos[0] + (__ud.__bg.pos[1] + i) * getDisplayWidth(),
-                   ((uint32_t *)pages[current_pgid]->server_bg_layer) + __ud.__bg.pos[0] + (__ud.__bg.pos[1] + i) * getDisplayWidth(),
-                   __ud.__bg.size[1]);
+            memcpy(((uint32_t *)drm_buffer) + (__ud.__bg.pos[0] + (__ud.__bg.pos[1] + i) * getDisplayWidth()),
+                   ((uint32_t *)pages[current_pgid]->server_bg_layer) + (__ud.__bg.pos[0] + (__ud.__bg.pos[1] + i) * getDisplayWidth()),
+                   __ud.__bg.size[1] * sizeof(uint32_t));
         }
     }
 
