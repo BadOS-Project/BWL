@@ -7,6 +7,8 @@
 #include <sys/time.h>
 #include <signal.h>
 
+#include "update.hh"
+
 #include "../includes/bsv.hh"
 #include "../includes/syscfg.hh"
 
@@ -24,6 +26,10 @@ namespace bwl
 
     uint8_t updating_signal = 1; //更新标志
 
+    extern uint64_t bgbuffsize;
+
+    __updating_signals __ud;
+
     /**
      * @brief 更新函数
      *
@@ -34,11 +40,17 @@ namespace bwl
             return;
         else
             updating_signal = 0;
-        memcpy(drm_buffer, pages[current_pgid]->server_bg_layer, getBgBuffSize()); //先将当前页的背景更新上去
+        //检查背景更新
+        if(__ud.__bg.sig)
+        {
+            update_bg();
+            __ud.__bg.sig = 0;
+        }
     }
 
     void updateDrmBuffer()
     {
+        bgbuffsize = getBgBuffSize();
         server::loadCfgFromFs(FPS_CFG);              //加载帧率配置
         useconds_t itv = interval(server::getFPS()); //获取帧率并换算为每帧时间间隔
         while (server_running)
