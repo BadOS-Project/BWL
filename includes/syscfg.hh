@@ -9,10 +9,11 @@ namespace bwl
     {
 
 #define FPS_CFG 0b1
+#define MONISIZE_CFG 0b10
         /**
          * @brief 从文件读取配置
-         * 
-         * @param opt 
+         *
+         * @param opt
          */
         void loadCfgFromFs(uint64_t opt);
 
@@ -22,6 +23,14 @@ namespace bwl
          * @return uint32_t
          */
         _Float64x getFPS();
+
+        /**
+         * @brief 获取显示器大小
+         *
+         * @param width
+         * @param height
+         */
+        void getMoniSize(uint64_t *width, uint64_t *height);
 
 #define interval(fps) (1000 / fps) //帧率转间隔
     };

@@ -20,6 +20,8 @@ namespace bwl
         {
             _Float64x fps;
             const std::string i_fps = "fps";
+            uint64_t size[2];
+            const std::string i_monisize = "monisize";
         } syscfg;
 
         void loadCfgFromFs(uint64_t opt)
@@ -45,12 +47,23 @@ namespace bwl
                     cfgfile >> syscfg.fps;
                     continue;
                 }
+                if((str == syscfg.i_monisize) && (opt & MONISIZE_CFG))
+                {
+                    cfgfile >> syscfg.size[0];
+                    cfgfile >> syscfg.size[1];
+                }
             }
         }
 
         _Float64x getFPS()
         {
             return syscfg.fps;
+        }
+
+        void getMoniSize(uint64_t *width, uint64_t *height)
+        {
+            *width = syscfg.size[0];
+            *height = syscfg.size[1];
         }
     };
 };
